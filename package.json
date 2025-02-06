@@ -28,7 +28,7 @@
                 {
                     "id": "sidebar_mp",
                     "title": "Matplotlib Pilot",
-                    "icon": "media/matplotlibpilot.logo.svg"
+                    "icon": "resources/logo/MPC.svg"
                 }
             ]
         },
@@ -70,6 +70,11 @@
                 "title": "modify sidebar"
             },
             {
+                "command": "matplotlib-pilot.resetSidebar",
+                "category": "MP",
+                "title": "reset sidebar"
+            },
+            {
                 "command": "matplotlib-pilot.refreshSidebar",
                 "category": "MP",
                 "title": "refresh sidebar"
@@ -78,6 +83,21 @@
         "configuration": {
             "title": "Matplotlib Pilot",
             "properties": {
+                "matplotlib-pilot.customSideBar": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Use custom sidebar default"
+                },
+                "matplotlib-pilot.customSideBarNotebookPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Custom sidebar notebook path"
+                },
+                "matplotlib-pilot.customSideBarHtmlPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Custom sidebar html path"
+                },
                 "matplotlib-pilot.customTemplateHtml": {
                     "type": "string",
                     "default": "",

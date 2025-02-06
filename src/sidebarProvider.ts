@@ -1,217 +1,152 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
+/**
+ * @fileoverview
+ * Provide sidebar view for matplotlib-pilot.
+ *  - Snippets Button
+ *  - Concept Button
+ *  - Template Button
+ *  - Custom Template Button
+ *  - Sidebar management Button
+ */
 
-let conceptPanel: vscode.WebviewPanel | undefined;
-let templatePanel: vscode.WebviewPanel | undefined;
-let customTemplatePanel: vscode.WebviewPanel | undefined;
+import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
+import { PanelManager } from "./panelManager";
+import { StaticPanel, NewFilePanel } from "./panel";
+
+let htmlStringNative: string;
+let htmlStringCustom: string;
+
+async function getHtmlForWebview(filePath: string): Promise<string> {
+  try {
+    return fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    vscode.window.showErrorMessage(`Load file ${filePath} error, ${error}`);
+    return `Load file ${filePath} error, ${error}`;
+  }
+}
 
 export default class SidebarProvider {
-    constructor(private readonly extensionUri: vscode.Uri) { }
+  private panelManager: PanelManager;
 
-    async resolveWebviewView(webviewView: vscode.WebviewView) {
-        webviewView.webview.options = {
-            enableScripts: true,
-            localResourceRoots: [this.extensionUri]
-        };
+  constructor(private readonly extensionUri: vscode.Uri) {
+    this.panelManager = new PanelManager();
 
-        // load html in sidebar
-        webviewView.webview.html = await this.getHtmlForWebview(webviewView.webview);
+    let conceptPath = path.join(extensionUri.fsPath, "pages", "concept.html");
+    this.panelManager.registerPanel(
+      new StaticPanel(extensionUri, "concept", "Matplotlib Concept", conceptPath)
+    );
 
-        // listen message
-        webviewView.webview.onDidReceiveMessage(message => {
-            const editor = vscode.window.activeTextEditor!;
+    let templatePath = path.join(extensionUri.fsPath, "pages", "template.vscode.html");
+    this.panelManager.registerPanel(
+      new NewFilePanel(extensionUri, "template", "Matplotlib Template", templatePath)
+    );
 
-            if ("snippets" in message) {
-                let text = message.snippets;
+    let customTemplateHtml: string = vscode.workspace
+      .getConfiguration()
+      .get("matplotlib-pilot.customTemplateHtml") as string;
 
-                editor.edit((build) => {
-                    // paste snippets
-                    build.insert(editor.selection.end, text);
-                });
-            }
+    if (fs.existsSync(customTemplateHtml)) {
+      this.panelManager.registerPanel(
+        new NewFilePanel(
+          extensionUri,
+          "customTemplate",
+          "Custom Matplotlib Template",
+          customTemplateHtml,
+          "copyPath"
+        )
+      );
+    } else {
+      // vscode.window.showWarningMessage(`自定义模板文件 ${customTemplateHtml} 不存在`);
+    }
+  }
 
-            // open `concept` page
-            if (message.id === "concept") {
-                this.openConcept();
-            }
+  async resolveWebviewView(webviewView: vscode.WebviewView) {
+    webviewView.webview.options = {
+      enableScripts: true,
+      localResourceRoots: [this.extensionUri],
+    };
 
-            // `pen `template` page
-            if (message.id === "template") {
-                this.openTemplate();
-            }
+    htmlStringNative = await getHtmlForWebview(
+      path.join(this.extensionUri.fsPath, "pages", "snippets.html")
+    );
+    htmlStringCustom = htmlStringNative;
+    let customSideBarHtmlPath: string = vscode.workspace
+      .getConfiguration()
+      .get("matplotlib-pilot.customSideBarHtmlPath") as string;
+    if (customSideBarHtmlPath) {
+      if (fs.existsSync(customSideBarHtmlPath)) {
+        htmlStringCustom = await getHtmlForWebview(customSideBarHtmlPath);
+      } else {
+        vscode.window.showWarningMessage(
+          `The sidebar description file ${customSideBarHtmlPath} does not exist, use the default sidebar`
+        );
+      }
+    }
+    else {
+      console.log("No custom sidebar html path");
+    }
 
-            // open `custom template` page
-            if (message.id === "customTemplate") {
-                this.openCustomTemplate();
-            }
+    let customSideBar: boolean = vscode.workspace
+      .getConfiguration()
+      .get("matplotlib-pilot.customSideBar") as boolean;
+    if (customSideBar) {
+      webviewView.webview.html = htmlStringCustom;
+    } else {
+      webviewView.webview.html = htmlStringNative;
+    }
 
-            return;
+    webviewView.webview.onDidReceiveMessage(async (message) => {
+      const editor = vscode.window.activeTextEditor!;
+
+      if ("snippets" in message) {
+        let text = message.snippets;
+        editor.edit((build) => {
+          build.insert(editor.selection.end, text);
         });
+      }
 
-    }
+      if (message.id && this.panelManager.hasPanel(message.id)) {
+        this.panelManager.openPanel(message.id);
+      }
 
-    async getHtmlForWebview(webview: vscode.Webview) {
-        const filePath = path.join(this.extensionUri.fsPath, 'snippets', 'snippets3.html');
-        let html = fs.readFileSync(filePath, 'utf8');
+      if (message.id === "modify") {
+        vscode.commands.executeCommand("matplotlib-pilot.modifySidebar");
+      }
 
-        return html;
-    }
+      if (message.id === "refresh") {
+        vscode.commands.executeCommand("matplotlib-pilot.refreshSidebar");
 
-    async generateFile(filename: string, content: string) {
-        if (vscode.workspace.workspaceFolders === undefined || vscode.workspace.workspaceFolders.length === 0) {
-            vscode.window.showErrorMessage('Please open the workspace first.');
+        setTimeout(async () => {
+          customSideBarHtmlPath = (await vscode.workspace
+            .getConfiguration()
+            .get("matplotlib-pilot.customSideBarHtmlPath")) as string;
+
+          if (customSideBarHtmlPath === undefined || customSideBarHtmlPath === "") {
             return;
-        }
-        const workspaceFolder = vscode.workspace.workspaceFolders[0];
-
-        // 写入新的 ipynb 文件
-        const newFilePath = path.join(workspaceFolder.uri.fsPath + `/${filename}`);
-        fs.mkdirSync(path.dirname(newFilePath), { recursive: true });
-        fs.writeFileSync(newFilePath, content);
-
-        vscode.window.showInformationMessage(`File ${filename} created in the workspace path.`);
-    }
-
-    async generateLocalIPYNB(filename: string, templatePath: string) {
-        if (vscode.workspace.workspaceFolders === undefined || vscode.workspace.workspaceFolders.length === 0) {
-            vscode.window.showErrorMessage('Please open the workspace first.');
+          } else if (!fs.existsSync(customSideBarHtmlPath)) {
+            vscode.window.showWarningMessage(
+              `The sidebar description file ${customSideBarHtmlPath} does not exist, use the default sidebar`
+            );
             return;
-        }
-        const workspaceFolder = vscode.workspace.workspaceFolders[0];
+          } else {
+            htmlStringCustom = await getHtmlForWebview(customSideBarHtmlPath);
+          }
+        }, 1000);
+      }
 
-        // load template
-        fs.readFile(templatePath, 'utf-8', (err, template) => {
-            if (err) {
-                vscode.window.showErrorMessage(`load file ${templatePath} error,${err}`);
-                return;
-            }
-
-            // write notebook in work directory
-            const newFilePath = path.join(workspaceFolder.uri.fsPath + `/${filename}`);
-            fs.mkdirSync(path.dirname(newFilePath), { recursive: true });
-            fs.writeFileSync(newFilePath, template);
-
-            vscode.window.showInformationMessage(`File ${filename} created in the workspace path.`);
-        });
-    }
-
-    checkFileExist(filename: string): boolean {
-        const workspaceFolder = vscode.workspace.workspaceFolders![0];
-        const targetPath = path.join(workspaceFolder.uri.fsPath, filename);
-        return fs.existsSync(targetPath);
-    }
-
-    openConcept() {
-        if (conceptPanel) {
-            conceptPanel.reveal(vscode.ViewColumn.One);
+      if (message.id === "toggleBar") {
+        console.log(message.native);
+        if (message.native) {
+          webviewView.webview.html = htmlStringNative;
+          console.log("native");
         } else {
-            const conceptFilePath = path.join(this.extensionUri.fsPath, 'pages', 'concept.html');
-            let conceptHtml = fs.readFileSync(conceptFilePath, 'utf8');
-            conceptPanel = vscode.window.createWebviewPanel(
-                'concept',
-                'Matplotlib Concept',
-                vscode.ViewColumn.One,
-                {
-                    enableScripts: true,
-                    retainContextWhenHidden: true,
-                }
-            );
-            conceptPanel.webview.html = conceptHtml;
-
-            conceptPanel.onDidDispose(() => {
-                conceptPanel = undefined;
-            });
+          webviewView.webview.html = htmlStringCustom;
+          console.log("Custom");
         }
-    }
+      }
 
-    openTemplate() {
-        if (templatePanel) {
-            templatePanel.reveal(vscode.ViewColumn.One);
-        } else {
-            const filePath = path.join(this.extensionUri.fsPath, 'pages', 'template.html');
-            let html = fs.readFileSync(filePath, 'utf8');
-            templatePanel = vscode.window.createWebviewPanel(
-                'template',
-                'Notebook Template',
-                vscode.ViewColumn.One,
-                {
-                    enableScripts: true
-                }
-            );
-            templatePanel.webview.html = html;
-
-            templatePanel.webview.onDidReceiveMessage(async message => {
-                const fileName = await vscode.window.showInputBox({ prompt: 'Please enter the filename of the notebook file (without the suffix).' });
-                if (!fileName) {
-                    vscode.window.showErrorMessage('No filename entered.');
-                    return;
-                }
-
-                const isFileExist = this.checkFileExist(fileName + '.ipynb');
-                if (isFileExist) {
-                    vscode.window.showWarningMessage(`The file ${fileName}.ipynb already exists. Please change the name or manually remove this file first.`);
-                    return;
-                }
-
-                await this.generateFile(fileName + '.ipynb', message.ipynb);
-            });
-
-            templatePanel.onDidDispose(() => {
-                templatePanel = undefined;
-            });
-        }
-    }
-
-    openCustomTemplate() {
-        if (customTemplatePanel) {
-            customTemplatePanel.reveal();
-        } else {
-            let customTemplateHtml: fs.PathOrFileDescriptor = vscode.workspace.getConfiguration().get('matplotlib-pilot.customTemplateHtml') as fs.PathOrFileDescriptor;
-
-            if (customTemplateHtml === "") {
-                vscode.window.showInformationMessage("Please first set the template web page path through the variable Custom Template HTML in the settings interface of VS Code. For the production method of the template web page, see the Overview column on the plugin homepage.");
-                return;
-            }
-
-            fs.readFile(customTemplateHtml, 'utf8', (err, html) => {
-                if (err) {
-                    vscode.window.showInformationMessage(`load file ${customTemplateHtml} error，${err}`);
-                    return;
-                }
-
-                customTemplatePanel = vscode.window.createWebviewPanel(
-                    'CustomTemplate',
-                    'Custom Template',
-                    vscode.ViewColumn.One,
-                    {
-                        enableScripts: true
-                    }
-                );
-                customTemplatePanel.webview.html = html;
-
-                customTemplatePanel.webview.onDidReceiveMessage(async message => {
-                    const filename = await vscode.window.showInputBox({ prompt: 'Please enter the filename of the notebook file (without the suffix).' });
-                    if (!filename) {
-                        vscode.window.showErrorMessage('No filename entered.');
-                        return;
-                    }
-
-                    const isFileExist = this.checkFileExist(filename + '.ipynb');
-                    if (isFileExist) {
-                        vscode.window.showWarningMessage(`The file ${filename}.ipynb already exists. Please change the name or manually remove this file first.`);
-                        return;
-                    }
-                    console.log(message.id);
-                    console.log(message.ipynbpath);
-                    await this.generateLocalIPYNB(filename + '.ipynb', message.ipynbpath);
-                });
-
-                customTemplatePanel.onDidDispose(() => {
-                    customTemplatePanel = undefined;
-                });
-            });
-        }
-    }
-
+      return;
+    });
+  }
 }

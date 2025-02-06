@@ -1,30 +1,54 @@
-import * as vscode from 'vscode';
-import { defineCustomTemplate } from './commandHandlers/defineCustomTemplate';
-import { loadtxt, load } from './commandHandlers/loadCommands';
-import { refreshSidebar, modifySidebar } from './commandHandlers/sidebarCommands';
-import SidebarProvider from './sidebarProvider';
+/**
+ * @fileoverview
+ * Register commands and webview view providers.
+ */
+
+import * as vscode from "vscode";
+import SidebarProvider from "./sidebarProvider";
+import { defineCustomTemplate } from "./commandHandlers/defineCustomTemplate";
+import { loadtxt, load } from "./commandHandlers/loadCommands";
+import {
+  refreshSidebar,
+  modifySidebar,
+  resetSidebar,
+} from "./commandHandlers/sidebarCommands";
+
+
+function registerCommands(context: vscode.ExtensionContext) {
+    let n: string = "matplotlib-pilot";
+    const commands = [
+      { command: `${n}.load`, callback: load },
+      { command: `${n}.loadtxt`, callback: loadtxt },
+      { command: `${n}.resetSidebar`, callback: resetSidebar },
+      { command: `${n}.modifySidebar`, callback: modifySidebar },
+      { command: `${n}.refreshSidebar`, callback: refreshSidebar },
+      { command: `${n}.defineCustomTemplate`, callback: defineCustomTemplate },
+    ];
+  
+    for (const { command, callback } of commands) {
+      const disposable = vscode.commands.registerCommand(command, () => {
+        callback(context);
+      });
+      context.subscriptions.push(disposable);
+    }
+  }
+  
+  function registerWebview(context: vscode.ExtensionContext) {
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider(
+        "mpSidebarView",
+        new SidebarProvider(context.extensionUri)
+      )
+    );
+  }
+
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Extension "matplotlib-pilot" is now active!');
 
-    // 自定义命令
-    context.subscriptions.push(
-        vscode.commands.registerCommand('matplotlib-pilot.defineCustomTemplate', () => defineCustomTemplate(context)),
-        vscode.commands.registerCommand('matplotlib-pilot.loadtxt', () => loadtxt(context)),
-        vscode.commands.registerCommand('matplotlib-pilot.load', () => load(context)),
-        vscode.commands.registerCommand('matplotlib-pilot.refreshSidebar', () => refreshSidebar(context)),
-        vscode.commands.registerCommand('matplotlib-pilot.modifySidebar', () => modifySidebar(context))
-    );
+    registerCommands(context);
 
-
-    // pltSidebarView
-    context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider(
-            'mpSidebarView',
-            new SidebarProvider(context.extensionUri)
-        )
-    );
-
+    registerWebview(context);
 }
 
 // This method is called when your extension is deactivated

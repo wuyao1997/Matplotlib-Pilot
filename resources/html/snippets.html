@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>
+        snippet
+    </title>
+</head>
+
+<body>
+    <div id="colorWrapper" style="display: flex; align-items: center;">
+        <div id="colorValue" onclick="copyColorValue()"
+            style="text-align: center; margin-right: 2px; width: 80%; text-overflow: ellipsis; white-space: nowrap;">
+            #0e639c
+        </div>
+        <input id="color" name="color" style="height: 32px; aspect-ratio: 1;"
+            title="Automatically copy the specified color value to the clipboard." type="color" value="#0e639c" />
+    </div>
+    <h4 style="text-align: center;">
+        Tools
+    </h4>
+    <button id="concept" style="width: 100%;" title="View common concepts such as color, marker, linestyle, and cmap.">
+        Concept
+    </button>
+    <button id="template" style="width: 100%;"
+        title="Open the notebook template view and click the button to create a copy in workspace.">
+        Template
+    </button>
+    <button id="customTemplate" style="width: 100%;" title="Open the custom template view page.">
+        Custom Template
+    </button>
+    <h4 style="text-align: center;">
+        Sidebar Manager
+    </h4>
+    <!-- <button id="modify" title="Custom Your Snippets Button" style="width: 48%;">Modify</button> -->
+    <!-- <button id="refresh" title="Refresh Sidebar View Manully" style="width: 48%;">Refresh</button> -->
+
+    <div class="switch-container" style="margin: 0 auto; display: flex; align-items: center; width: fit-content;">
+        <span class="text">Native</span>
+        <label class="switch">
+            <input type="checkbox" id="sidebarToggle">
+            <span class="slider round"></span>
+        </label>
+        <span class="text">Custom</span>
+    </div>
+
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+</body>
+
+</html>
