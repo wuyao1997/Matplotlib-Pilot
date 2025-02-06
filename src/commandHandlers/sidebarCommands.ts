@@ -118,7 +118,7 @@ export async function refreshSidebar(context: vscode.ExtensionContext) {
     let htmlString: string = ipynb2sidebarHtmlString(nb_string, context);
     const newFilePath = path.join(path.dirname(uri.fsPath), `${filename}.html`);
     await fs.writeFileSync(newFilePath, htmlString);
-    vscode.window.showInformationMessage(`HTML文件已写入 ${newFilePath} 中。`);
+    vscode.window.showInformationMessage(`HTML have been written to ${newFilePath}.`);
 
     const config = vscode.workspace.getConfiguration();
     config.update(
@@ -128,8 +128,8 @@ export async function refreshSidebar(context: vscode.ExtensionContext) {
     );
   } else {
     vscode.window.showInformationMessage(
-      "未刷新侧边栏视图，因为未通过配置项 Custom SideBar Notebook Path " +
-        "配置本地侧边栏对应 Notebook 文件路径。"
+      "Not refresh the sidebar view because the Custom SideBar Notebook Path " +
+      "is not configured."
     );
   }
 }
@@ -140,7 +140,8 @@ export async function modifySidebar(context: vscode.ExtensionContext) {
     .get("matplotlib-pilot.customSideBarNotebookPath") as string;
   if (!customSideBarPath) {
     vscode.window.showInformationMessage(
-      `另存原生模板初始化自定义侧边栏，注意保存至稳定路径`
+        "Save the native template to initialize the custom sidebar, " +
+        "please save to a stable path."
     );
   }
   if (customSideBarPath && fs.existsSync(customSideBarPath)) {
@@ -167,7 +168,7 @@ export async function modifySidebar(context: vscode.ExtensionContext) {
           if (fileUri) {
             fs.writeFileSync(fileUri.fsPath, notebookContent);
             vscode.window.showInformationMessage(
-              `本地侧边栏描述文件成功另存为 ${fileUri.fsPath}。`
+              `Custom Sidebar Notebook has been save to ${fileUri.fsPath}.`
             );
 
             const config = vscode.workspace.getConfiguration();
@@ -179,7 +180,7 @@ export async function modifySidebar(context: vscode.ExtensionContext) {
           }
         });
     } catch (error) {
-      vscode.window.showErrorMessage(`出现错误：${error}`);
+      vscode.window.showErrorMessage(`Error: ${error}`);
     }
   }
 }

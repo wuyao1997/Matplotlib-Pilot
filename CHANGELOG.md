@@ -6,9 +6,20 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-- Initial release
+## [0.0.3]
+
+### Added
+
+- Add `Sidebar Manager` in sidebar view
+
+### Changed
+
+- Modify the sidebar view
+- Inprove Concept Page
+- Improve Template Page
 
 ## [0.0.1]
 
 ### Added
+
 Initialize the project. Mainly translate the plugin [Matplotlib Pilot Chinese](https://marketplace.visualstudio.com/items?itemName=litchi.plt-snippet) into English version. The main functions are similar.

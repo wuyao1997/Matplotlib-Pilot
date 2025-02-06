@@ -1,0 +1,1 @@
+vsce package --no-rewrite-relative-links --pre-release

@@ -50,7 +50,7 @@ export async function defineCustomTemplate(context: vscode.ExtensionContext) {
         } catch (error) {
           $(element).attr("src", `data:image/png;base64,${defaultCover_base64}`);
           vscode.window.showWarningMessage(
-            `读取封面文件 ${imagePath} 失败: ${error}，使用默认模板封面`
+            `load ${imagePath} Error: ${error}, Use default cover instead.`
           );
         }
       }
@@ -65,14 +65,15 @@ export async function defineCustomTemplate(context: vscode.ExtensionContext) {
     // 写入配置项
     const config = vscode.workspace.getConfiguration();
     config.update(
-      "plt-snippet.customTemplateHtml",
+      "matplotlib-pilot.customTemplateHtml",
       newFilePath,
       vscode.ConfigurationTarget.Global
     );
 
     vscode.window.showInformationMessage(
-      `自定义模板文件写出到 ${newFilePath}，并重设配置项 Custom Template Html 为该文件，` +
-        `重启 VSCode 生效。`
+      `Write custom template to ${newFilePath}, ` +
+        `and reset the configuration item Custom Template Html to ${newFilePath}, ` +
+        `then restart VSCode to take effect.`
     );
   }
 }

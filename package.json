@@ -2,8 +2,8 @@
     "name": "matplotlib-pilot",
     "displayName": "Matplotlib Pilot",
     "description": "A VS Code Extension provides tools such as Matplotlib code snippets and templates.",
-    "icon": "media/matplotlibpilot.t.logo.png",
-    "version": "0.0.1",
+    "icon": "resources/logo/MPC_filled.png",
+    "version": "0.0.2",
     "publisher": "litchi",
     "engines": {
         "vscode": "^1.72.0"
