@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>concept</title>
+    <style>
+        html {
+            color: var(--vscode-foreground);
+            ;
+            background-color: var(--vscode-editor-background);
+        }
+
+        body {
+            padding: 0 var(--container-paddding);
+            margin-left: 2em;
+            color: var(--vscode-foreground);
+            font-size: var(--vscode-font-size);
+            font-weight: var(--vscode-font-weight);
+            font-family: var(--vscode-font-family);
+            background-color: var(--vscode-editor-background);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                font-size: 1.5em;
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 2.0em;
+            }
+        }
+
+        @media print {
+            html {
+                background-color: white;
+            }
+
+            body {
+                background-color: transparent;
+                color: rgb(0, 0, 0);
+                font-size: 12pt;
+            }
+
+            pre {
+                font-family: Arial, sans-serif;
+            }
+
+            p,
+            h2,
+            h3 {
+                orphans: 3;
+                widows: 3;
+            }
+
+            h2,
+            h3,
+            h4 {
+                page-break-after: avoid;
+            }
+        }
+
+        a {
+            color: #0083c5;
+        }
+
+        a:visited {
+            color: #00aaff;
+        }
+
+        img {
+            width: 72%;
+        }
+
+        svg {
+            height: auto;
+            max-width: 100%;
+        }
+
+        h2 {
+            margin-top: 1.4em;
+            padding: 5px 20px;
+            background-color: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            position: relative;
+        }
+
+        blockquote {
+            margin: 1em 0 1em 1.7em;
+            padding-left: 1em;
+            border-left: 2px solid #e6e6e6;
+            color: #606060;
+        }
+
+        code {
+            font-family: var(--vscode-editor-font-family);
+            font-size: var(--vscode-editor-font-size);
+        }
+
+        pre {
+            margin: 1em 0;
+            overflow: auto;
+        }
+
+        pre code {
+            padding: 0;
+            overflow: visible;
+            overflow-wrap: normal;
+        }
+
+        .sourceCode {
+            background-color: transparent;
+            overflow: visible;
+        }
+
+        table {
+            margin: 1em 0;
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+            font-variant-numeric: lining-nums tabular-nums;
+        }
+
+        table caption {
+            margin-bottom: 0.75em;
+        }
+
+        tbody {
+            margin-top: 0.5em;
+            border-top: 2px solid var(--vscode-foreground);
+            border-bottom: 2px solid var(--vscode-foreground);
+        }
+
+        th {
+            border-top: 2px solid var(--vscode-foreground);
+            padding: 0.25em 0.5em 0.25em 0.5em;
+            border-right: 2px solid var(--vscode-foreground);
+            border-left: 2px solid var(--vscode-foreground);
+        }
+
+        td {
+            padding: 0.125em 0.5em 0.25em 0.5em;
+            border-right: 2px solid var(--vscode-foreground);
+            border-left: 2px solid var(--vscode-foreground);
+            border-top: 2px solid var(--vscode-foreground);
+        }
+
+        header {
+            margin-bottom: 4em;
+            text-align: center;
+            border-left: 2px solid var(--vscode-foreground);
+        }
+
+        /* 默认情况下隐藏内容 */
+        .collapsible-content {
+            display: none;
+            padding: 0 18px;
+        }
+
+        /* 当点击标题时切换加号和减号图标 */
+        h2.collapsible::after {
+            content: '[▼]';
+            position: absolute;
+            right: 10px;
+        }
+
+        h2.collapsible.open::after {
+            content: '[▲]';
+            position: absolute;
+            right: 10px;
+        }
+
+        h2.collapsible.open+.collapsible-content {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    $body$
+    <script>
+        function toggleContent(element) {
+            // 获取下一个兄弟元素（即相关内容）
+            var content = element.nextElementSibling;
+
+            // 切换 "open" 类以改变样式
+            element.classList.toggle("open");
+
+            // 切换内容的显示状态
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>

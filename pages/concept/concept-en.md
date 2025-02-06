@@ -1,12 +1,13 @@
-<h2 class="collapsible" onclick="toggleContent(this)"> 标识符-matplotlib.markers </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Marker </h2>
 
 <div class="collapsible-content">
-可以在绘图函数内通过`marker="marker name"`设置标识符，
-标识符大小通过`markersize1=<16>`设置。
+In method like `plot` or `scatter`,
+the marker can be set by `marker="marker name"`.
+The marker size can be set by `markersize=<16>`.
 
-[点击这里去 官网-markers](https://matplotlib.org/stable/api/markers_api.html)
+[Click here to document for Marker](https://matplotlib.org/stable/api/markers_api.html)
 
-下面是一些常用的`marker name`
+There is a list of marker symbols in the table below.
 
 | marker | symbol                                   | description    |
 | ------ | ---------------------------------------- | -------------- |
@@ -38,41 +39,44 @@
 
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 颜色-matplotlib.colors </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Colors </h2>
 
 <div class="collapsible-content">
 
-[点击这里去官网 颜色-matplotlib.colors](https://matplotlib.org/stable/gallery/color/named_colors.html)
+[Click here to document for Colors](https://matplotlib.org/stable/gallery/color/named_colors.html)
 
-颜色的控制参数为`color="color name"`，`color name`有很多形式，包括
+The control parameter for color is `color="color name"`.
+There are many forms of `color name`, including:
 
-1. 单字母
+1. Single letter
 
 ![](image/color/named_colors_2.png)
 
-2. 单词
+2. Word
 
 ![](image/color/named_colors_1.png)
 
-3. 六位十六进制颜色值
+3. Six-digit hexadecimal color value
 
 - "#ff0094"
 - "#ff0000"
 - "#000000"
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 颜色映射-colormap </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Colormap </h2>
 <div class="collapsible-content">
-[点击这里去官网 颜色映射-colormap](https://matplotlib.org/stable/gallery/color/colormap_reference.html)
 
-颜色映射的控制参数为`cmap="colormap name"`，常用的`colormap name`为
+[Click here to document for Colormap](https://matplotlib.org/stable/gallery/color/colormap_reference.html)
 
-- `jet`: `ANSYS Fluent`默认选项
-- `coolwarm`: `Paraview`默认选项
-- `hot`: `Comsol`默认选项
-- `Greys` or `gray`: 灰度
-- `binary`: 黑白二值
-- 所有`colormapname`均支持`colormapname_r`来反转
+The control parameter for color mapping is `cmap="colormap name"`.
+Commonly used `colormap names` are:
+
+- `jet`: The default option for `ANSYS Fluent`.
+- `coolwarm`: The default option for `Paraview`.
+- `hot`: The default option for `Comsol`.
+- `Greys` or `gray`: Grayscale.
+- `binary`: Black and white binary.
+- All `colormap names` support `colormapname_r` to reverse.
 
 ![](image/cmap/cmap_1.png)
 ![](image/cmap/cmap_2.png)
@@ -85,57 +89,58 @@
 
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 线形-linestyles </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Line Styles </h2>
 <div class="collapsible-content">
-线型参数可以通过`linestyle="linestyle name"`设置，
-线宽控制为`linewidth=<2>` or `lw=<2>`
-常用的`linestyle name`为：
+The line style parameter can be set by `linestyle="linestyle name"`. 
+The line width is controlled by `linewidth=<2>` or `lw=<2>`. 
+Commonly used `linestyle names` are:
 
-- `solid` 实线
-- `dotted` 点线
-- `dashed` 虚线
-- `dashdot` 点画线
+- `solid`: Solid line.
+- `dotted`: Dotted line.
+- `dashed`: Dashed line.
+- `dashdot`: Dash-dot line.
 
-线形还可以通过一个元组`(a, (b,c,...))`控制，其中
+The line style can also be controlled by a tuple `(a, (b, c,...))`, where:
 
-- `a`: 线条的重复方式，通常为 0
-- `b`: 线段长度
-- `c`: 空白长度
-- `d`: 下一段线长度(可选)
-- `e`: 下一段空白长度(可选)
+- `a`: The repetition mode of the line, usually 0.
+- `b`: The length of the line segment.
+- `c`: The length of the blank space.
+- `d`: The length of the next line segment (optional).
+- `e`: The length of the next blank space (optional).
 
-下面是一些效果，也可以 [点击这里去官网 线形-linestyles](https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html)
+Here are some effects, for more infomation [Click here to document for linestyles](https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html)
 
 ![](image/ls/linestyle.png)
 
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 阴影线-matplotlib.hatch </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Hatch </h2>
 <div class="collapsible-content">
-可以在一些绘图函数中通过`hatch`参数指定`patch`对象的填充值，
-这一点在一些[条形图](https://matplotlib.org/stable/gallery/shapes_and_collections/hatch_demo.html)中常用于区分不同组数据。 也可以 [点击这里去官网 阴影线-matplotlib.hatch](https://matplotlib.org/stable/gallery/shapes_and_collections/hatch_style_reference.html)
 
-以下是`hatch`参数的一些可选值
+The `hatch` parameter can be used to specify the fill value of a `patch` object in some plotting functions. This is often used in some [bar charts](https://matplotlib.org/stable/gallery/shapes_and_collections/hatch_demo.html) to distinguish different groups of data. [Click here to document for hatch](https://matplotlib.org/stable/gallery/shapes_and_collections/hatch_style_reference.html)
 
-1. 单个字符决定样式
+Here are some possible values for the `hatch` parameter:
 
-![](image/hatch/hatch_1.webp)
+1. A single character determines the style.
 
-2. 重复字符可以增加密度
+![Single character](image/hatch/hatch_1.webp)
 
-![](image/hatch/hatch_2.webp)
+2. Repeating characters can increase the density.
 
-3. 组合字符可以组合样式
+![Repeating characters](image/hatch/hatch_2.webp)
 
-![](image/hatch/hatch_3.webp)
+3. Combining characters can combine styles.
+
+![Combined characters](image/hatch/hatch_3.webp)
 
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 文本框-BoxStyle </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Box Style </h2>
 <div class="collapsible-content">
-[点击这里去官网-BoxStyle](https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.BoxStyle.html)
 
-1. 下面的代码演示了`Axes.text`函数中指定文本框的方法，效果如下图。
+[Click here to document for BoxStyle](https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.BoxStyle.html)
+
+1. The code below demonstrates the method of specifying text boxes in the `Axes.text` function, as shown in the figure below.
 
 <pre>
 fig, ax = plt.subplots(figsize=(3,2), dpi=300)
@@ -154,7 +159,7 @@ ax.text(0.7, 0.2, "round4", bbox=dict(boxstyle='round4', fc='silver', ec='gray')
 
 ![boxstyle](image/boxstyle/boxstyle.png)
 
-2. 对于创建时没有添加文本框的文本对象，可以使用 set_bbox 方法添加，例如
+2. For text objects created without adding text boxes, user can use the set_bbox method to add them, for example
 
 <pre>
 fig, ax = plt.subplots(figsize=(3,1), dpi=200)
@@ -168,14 +173,16 @@ for text in ax.get_xticklabels():
 
 ![boxstyle](image/boxstyle/xticklabel_box.png)
 
-3. 轮廓线线型、线宽、重设颜色等可以在通过 get_bbox_patch()函数获取文本框对象后，使用 set_color,set_edgecolor,set_linstyle 等函数确定
+3. The Linestyle, Linewidth, and Color of the text box can be set after obtaining the text box object by using the `get_bbox_patch()` function, and using the set_color, set_edgecolor, and set_linestyle functions to determine.
+
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 箭头-ArrowStyle </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Arrow Style </h2>
 <div class="collapsible-content">
-[点击这里去官网-箭头ArrowStyle](https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.ArrowStyle.html)
 
-ArrowStyle 中通常在 annotate 中使用，用户可以使用如下方式修改默认参数：
+[Click here to document for ArrowStyle](https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.ArrowStyle.html)
+
+ArrowStyle usually used in annotate, and the default parameters can be modified as follows:
 
 <pre>
 from matplotlib.patches import ArrowStyle
@@ -187,28 +194,28 @@ ax.annotate("->", xytext=(0.1,0.25), xy=(0.9,0.25),
     ), bbox=dict(boxstyle="square", fc="w"))
 </pre>
 
-下图是 matplotlib 中可用的箭头样式及其关键字参数默认值，参数含义见下表。
+The Arrowstyle and its keyword are shown below, and the meaning of keyword is shown in the table below.
+
 ![](image/arrowstyle/arrowstyle.png)
 
-| 关键字             | 含义                                    |
-| ------------------ | --------------------------------------- |
-| `head_length`      | 箭头的长度                              |
-| `head_width`       | 箭头的敞开宽度                          |
-| `widthA, widthB`   | 起点和终点的中括号张开长度              |
-| `lengthA, lengthB` | 起点和终点中括号的齿牙长度              |
-| `angleA, angleB`   | 起点和重点的中括号角度                  |
-| `tail_width`       | 箭头尾部宽度                            |
-| `shrink_factor`    | 控制楔形鼓起程度，通常保持为默认值`0.5` |
+| keyword            | meaning                              |
+| ------------------ | ------------------------------------ |
+| `head_length`      | Length of arrow head                 |
+| `head_width`       | Width of arrow head                  |
+| `widthA, widthB`   | Width of arrow head at start and end |
+| `lengthA, lengthB` | Width of arrow cap at start and end  |
+| `angleA, angleB`   | Angle of arrow cap at start and end  |
+| `tail_width`       | Width of arrow tail                  |
+| `shrink_factor`    | Factor of wedge bulging, usually 0.5 |
 
 </div>
 
-<h2 class="collapsible" onclick="toggleContent(this)"> 绘图样式-matplotlib.style </h2>
+<h2 class="collapsible" onclick="toggleContent(this)"> Style Sheets </h2>
 <div class="collapsible-content">
-可以使用`plt.style.use('bmh')`设置相应的风格，
-其中风格字符串名可以使用`print(plt.style.available)`打印，
-安装一些库（例如`pip install SciencePlots`）后可以使用更多风格。
 
-以下时一些内置风格，也可以 [点击这里去官网 绘图样式-matplotlib.style](https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html)。
+You can use `plt.style.use('bmh')` to set the corresponding style. The style string name can be printed by using `print(plt.style.available)`. After installing some libraries (such as `pip install SciencePlots`), more styles can be used. [Click here to document for Style Sheets](https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html)。
+
+Here are some built-in styles.
 
 ![bmh](image/style/bmh.png)
 ![fivethirtyeight](image/style/fivethirtyeight.png)

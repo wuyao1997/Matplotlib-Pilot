@@ -112,7 +112,10 @@ export default class SidebarProvider {
                 'concept',
                 'Matplotlib Concept',
                 vscode.ViewColumn.One,
-                {}
+                {
+                    enableScripts: true,
+                    retainContextWhenHidden: true,
+                }
             );
             conceptPanel.webview.html = conceptHtml;
 

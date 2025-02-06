@@ -51,16 +51,16 @@ At the same time, make sure that the version of VS Code is higher than `1.72.0`.
 Users can customize the sidebar code snippet buttons. For example, modify the content of the code snippet corresponding to the font modification button to match the current local environment. Another example is that if you don't like the default drawing style, then you can create a new button and fill in the code you need.
 
 1. Press `F1` to bring up the command panel in `VS Code` and enter `MP: modify sidebar`.
-![modify](media/image_readme/modify.png)
+![modify](https://github.com/openlitchi/Matplotlib-Pilot/raw/HEAD/media/image_readme/modify.png)
 
 2. Click the corresponding button to open the notebook file used to configure the sidebar (the `Jupyter` plugin needs to be installed).
 
 3. Now you can modify the corresponding code snippet as needed. After modification, save the file (`Ctrl+S`) and close it.
-![snippets](media/image_readme/snippets.png)
+![snippets](https://github.com/openlitchi/Matplotlib-Pilot/raw/HEAD/media/image_readme/snippets.png)
 
 
 4. Press `F1` to bring up the command panel in `VS Code` and enter `MP: refresh sidebar`. Click the corresponding button.
-![refresh](media/image_readme/refresh.png)
+![refresh](https://github.com/openlitchi/Matplotlib-Pilot/raw/HEAD/media/image_readme/refresh.png)
 
 5. Restart `VS Code` to see the modified sidebar.
 
